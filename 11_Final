@@ -1,0 +1,123 @@
+
+
+Задача (семинар 11): f(x) = (sin(x)/2 + cos(x)/2) ** 2 * sin(x)
+
+Определить корни
+
+Найти интервалы, на которых функция возрастает
+
+Найти интервалы, на которых функция убывает
+
+Построить график
+
+Вычислить вершину
+
+Определить промежутки, на котором f > 0
+
+Определить промежутки, на котором f < 0
+
+from sympy import *
+
+x = Symbol('x')
+
+func = (sin(x)/2 + cos(x)/2) ** 2 * sin(x)
+func
+
+t = periodicity(func,x)
+t
+
+Ищем корни
+
+simple = trigsimp(func)
+root = sorted(solve(simple))
+root
+
+[-pi/4, 0, 3*pi/4, pi]
+
+Поиск интервалов возрастания - убывания
+
+dif=diff(func,x)
+print(f' Производная функции:\n {dif}')
+print()
+
+root_dif=sorted(solve(dif))
+print(f' Корни производной функции:\n {root_dif}')
+print()
+
+point = root_dif[0] + t
+root_diff_1 = root_dif[:]
+root_diff_1.append(point)
+root_diff_1 = sorted(root_diff_1)
+for i in range(1, len(root_diff_1)):
+    a = func.subs(x,root_diff_1[i-1])
+    b = func.subs(x,root_diff_1[i])
+    if a < b:
+        print(f'{i}. Функция возрастает на промежутке {root_diff_1[i-1]} : {root_diff_1[i]}.')
+        print()
+    else:
+        print(f'{i}. Функция убывает на промежутке {root_diff_1[i-1]} : {root_diff_1[i]}.')
+        print()
+
+ Производная функции:
+ (-sin(x) + cos(x))*(sin(x)/2 + cos(x)/2)*sin(x) + (sin(x)/2 + cos(x)/2)**2*cos(x)
+
+ Корни производной функции:
+ [-2*atan(-3/2 + sqrt(6)*sqrt(5 - sqrt(17))/2 + sqrt(17)/2), -pi/4, 2*atan(-sqrt(6)*sqrt(sqrt(17) + 5)/2 + 3/2 + sqrt(17)/2), 2*atan(-sqrt(17)/2 + sqrt(6)*sqrt(5 - sqrt(17))/2 + 3/2), 3*pi/4, 2*atan(3/2 + sqrt(17)/2 + sqrt(6)*sqrt(sqrt(17) + 5)/2)]
+
+1. Функция возрастает на промежутке -2*atan(-3/2 + sqrt(6)*sqrt(5 - sqrt(17))/2 + sqrt(17)/2) : -pi/4.
+
+2. Функция убывает на промежутке -pi/4 : 2*atan(-sqrt(6)*sqrt(sqrt(17) + 5)/2 + 3/2 + sqrt(17)/2).
+
+3. Функция возрастает на промежутке 2*atan(-sqrt(6)*sqrt(sqrt(17) + 5)/2 + 3/2 + sqrt(17)/2) : 2*atan(-sqrt(17)/2 + sqrt(6)*sqrt(5 - sqrt(17))/2 + 3/2).
+
+4. Функция убывает на промежутке 2*atan(-sqrt(17)/2 + sqrt(6)*sqrt(5 - sqrt(17))/2 + 3/2) : 3*pi/4.
+
+5. Функция возрастает на промежутке 3*pi/4 : 2*atan(3/2 + sqrt(17)/2 + sqrt(6)*sqrt(sqrt(17) + 5)/2).
+
+6. Функция убывает на промежутке 2*atan(3/2 + sqrt(17)/2 + sqrt(6)*sqrt(sqrt(17) + 5)/2) : -2*atan(-3/2 + sqrt(6)*sqrt(5 - sqrt(17))/2 + sqrt(17)/2) + 2*pi.
+
+График
+
+graph=plot(simple,dif,(x,-pi,pi))
+
+Вычисление вершин
+
+for dif in root_dif:
+    point = func.subs(x, dif)
+    print(f'Вершина функции:\n x = {dif},\n y = {point}')
+
+Вершина функции:
+ x = -2*atan(-3/2 + sqrt(6)*sqrt(5 - sqrt(17))/2 + sqrt(17)/2),
+ y = -(-sin(2*atan(-3/2 + sqrt(6)*sqrt(5 - sqrt(17))/2 + sqrt(17)/2))/2 + cos(2*atan(-3/2 + sqrt(6)*sqrt(5 - sqrt(17))/2 + sqrt(17)/2))/2)**2*sin(2*atan(-3/2 + sqrt(6)*sqrt(5 - sqrt(17))/2 + sqrt(17)/2))
+Вершина функции:
+ x = -pi/4,
+ y = 0
+Вершина функции:
+ x = 2*atan(-sqrt(6)*sqrt(sqrt(17) + 5)/2 + 3/2 + sqrt(17)/2),
+ y = (sin(2*atan(-sqrt(6)*sqrt(sqrt(17) + 5)/2 + 3/2 + sqrt(17)/2))/2 + cos(2*atan(-sqrt(6)*sqrt(sqrt(17) + 5)/2 + 3/2 + sqrt(17)/2))/2)**2*sin(2*atan(-sqrt(6)*sqrt(sqrt(17) + 5)/2 + 3/2 + sqrt(17)/2))
+Вершина функции:
+ x = 2*atan(-sqrt(17)/2 + sqrt(6)*sqrt(5 - sqrt(17))/2 + 3/2),
+ y = (cos(2*atan(-sqrt(17)/2 + sqrt(6)*sqrt(5 - sqrt(17))/2 + 3/2))/2 + sin(2*atan(-sqrt(17)/2 + sqrt(6)*sqrt(5 - sqrt(17))/2 + 3/2))/2)**2*sin(2*atan(-sqrt(17)/2 + sqrt(6)*sqrt(5 - sqrt(17))/2 + 3/2))
+Вершина функции:
+ x = 3*pi/4,
+ y = 0
+Вершина функции:
+ x = 2*atan(3/2 + sqrt(17)/2 + sqrt(6)*sqrt(sqrt(17) + 5)/2),
+ y = (cos(2*atan(3/2 + sqrt(17)/2 + sqrt(6)*sqrt(sqrt(17) + 5)/2))/2 + sin(2*atan(3/2 + sqrt(17)/2 + sqrt(6)*sqrt(sqrt(17) + 5)/2))/2)**2*sin(2*atan(3/2 + sqrt(17)/2 + sqrt(6)*sqrt(sqrt(17) + 5)/2))
+
+Вычисление промежутков, где f > 0 и f < 0
+
+point1 = root[0] + t
+lst_zero = root[:]
+lst_zero.append(point1)
+for i in range(1, len(lst_zero)-1):
+    point = lst_zero[i-1]
+    if func.subs(x, point + 0.0000001) > 0:
+        print(f'{i}. Функция на промежутке ({lst_zero[i-1]} : {lst_zero[i]}) > 0.')
+    else:
+        print(f'{i}. Функция на промежутке ({lst_zero[i-1]} : {lst_zero[i]}) < 0.')
+
+1. Функция на промежутке (-pi/4 : 0) < 0.
+2. Функция на промежутке (0 : 3*pi/4) > 0.
+3. Функция на промежутке (3*pi/4 : pi) > 0.
+
